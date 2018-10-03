@@ -1,9 +1,13 @@
 CC=emcc
+TSC=tsc
 LDFLAGS=-O2 --llvm-opts 2
 
-all: glcore
+all: glcore.js triangle.js
 
-glcore: main.cpp shaders.cpp
+triangle.js: triangle.ts
+	$(TSC) triangle.ts --out triangle.js
+
+glcore.js: main.cpp shaders.cpp
 	$(CC) $? --bind \
 		  -s FULL_ES2=1 \
 		  -s EXPORTED_FUNCTIONS="['_initGL','_drawTriangle']" \
