@@ -3,9 +3,7 @@
 #include <GLES2/gl2ext.h>
 #include <SDL/SDL.h>
 
-#ifdef EMSCRIPTEN
 #include <emscripten.h>
-#endif
 
 #include "shaders.h"
 
