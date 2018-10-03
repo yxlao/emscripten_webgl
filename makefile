@@ -14,5 +14,6 @@ glcore.js: main.cpp shaders.cpp
 		  -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap", "setValue"]' \
 		  $(LDFLAGS) -o glcore.js
 clean:
+	rm -rf triangle.js
 	rm -rf glcore.js
 	rm -rf glcore.js.map
