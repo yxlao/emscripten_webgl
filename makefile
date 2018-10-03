@@ -1,14 +1,14 @@
 CC=emcc
-SOURCES:=$(wildcard *.cpp)
-EXPORTS_FILE=makefile_exports.txt
 LDFLAGS=-O2 --llvm-opts 2
-OUTPUT=glcore.js
 
-all: $(SOURCES) $(OUTPUT)
+all: glcore
 
-$(OUTPUT): $(SOURCES) 
-	$(CC) $(SOURCES) --bind -s FULL_ES2=1 -s EXPORTED_FUNCTIONS=@$(EXPORTS_FILE) -std=c++11 $(LDFLAGS) -o $(OUTPUT)
-
+glcore: main.cpp shaders.cpp
+	$(CC) $? --bind \
+		  -s FULL_ES2=1 \
+		  -s EXPORTED_FUNCTIONS="['_initGL','_drawTriangle']" \
+		  -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap", "setValue"]' \
+		  $(LDFLAGS) -o glcore.js
 clean:
-	rm $(OUTPUT)
-	rm $(OUTPUT).map
+	rm -rf glcore.js
+	rm -rf glcore.js.map
