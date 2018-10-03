@@ -1,4 +1,4 @@
-module TriangleExample {
+namespace TriangleExample {
     declare var $;
 
     export interface Point {
@@ -16,7 +16,10 @@ module TriangleExample {
         lastMouseCoord: Point = null;
         zoomSensitivity: number = 2.0;
 
-        constructor(private canvas: HTMLCanvasElement, private area: IPanZoomable) {
+        constructor(
+            private canvas: HTMLCanvasElement,
+            private area: IPanZoomable
+        ) {
             $(canvas).mousewheel(this.onMouseWheel.bind(this));
             canvas.onmousedown = this.onMouseDown.bind(this);
             canvas.onmouseup = this.onMouseUp.bind(this);
@@ -25,7 +28,10 @@ module TriangleExample {
         }
 
         private getLocalCoord(ev: MouseEvent): Point {
-            return { x: ev.clientX - this.canvas.offsetLeft, y: ev.clientY - this.canvas.offsetTop };
+            return {
+                x: ev.clientX - this.canvas.offsetLeft,
+                y: ev.clientY - this.canvas.offsetTop
+            };
         }
 
         onMouseDown(ev: MouseEvent) {
@@ -43,7 +49,10 @@ module TriangleExample {
         onMouseMove(ev: MouseEvent) {
             var e = this.getLocalCoord(ev);
             if (this.isMouseDown) {
-                var offset = { x: e.x - this.lastMouseCoord.x, y: e.y - this.lastMouseCoord.y };
+                var offset = {
+                    x: e.x - this.lastMouseCoord.x,
+                    y: e.y - this.lastMouseCoord.y
+                };
                 this.lastMouseCoord = e;
                 this.area.pan(offset);
             }
@@ -56,7 +65,10 @@ module TriangleExample {
         onMouseWheel(ev: any) {
             ev.wheelDelta = ev.deltaY * 120.0;
             var e = this.getLocalCoord(ev);
-            this.area.zoom(1.0 + ev.wheelDelta / 1200.0 * this.zoomSensitivity, e);
+            this.area.zoom(
+                1.0 + (ev.wheelDelta / 1200.0) * this.zoomSensitivity,
+                e
+            );
             return false;
         }
     }
