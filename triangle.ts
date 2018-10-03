@@ -1,20 +1,23 @@
 ///<reference path="input.ts"/>
 
-module TriangleExample {
+namespace TriangleExample {
     //type declarations for emscripten module and wrappers
     declare var Module: {
         cwrap: (name: string, returnType: string, params: string[]) => any;
         setValue: (ptr: number, value: number, type: string) => void;
-    }
+    };
     declare var _malloc: (number) => number;
     declare var _free: (number) => void;
 
     //bindings to C++ functions
     class Bindings {
-        public static initGL: (width: number, height: number) => number
-            = Module.cwrap('initGL', 'number', ['number', 'number']);
-        public static drawTriangle: (translationPtr: number) => void
-            = Module.cwrap('drawTriangle', '', ['number']);
+        public static initGL: (
+            width: number,
+            height: number
+        ) => number = Module.cwrap("initGL", "number", ["number", "number"]);
+        public static drawTriangle: (
+            translationPtr: number
+        ) => void = Module.cwrap("drawTriangle", "", ["number"]);
     }
 
     //a helper for some JS-to-Emscripten conversions
@@ -22,7 +25,7 @@ module TriangleExample {
         public static floatArrayToHeap(arr: number[]): number {
             var arrayPointer = _malloc(arr.length * 4);
             for (var i = 0; i < arr.length; i++)
-                Module.setValue(arrayPointer + i * 4, arr[i], 'float');
+                Module.setValue(arrayPointer + i * 4, arr[i], "float");
             return arrayPointer;
         }
     }
@@ -50,8 +53,12 @@ module TriangleExample {
         //translate the whole GL scene by offset
         pan(offset: Point) {
             var glOffset = {
-                x: offset.x / this.canvas.width * 2.0 / this.translation.zoom,
-                y: offset.y / this.canvas.height * 2.0 / this.translation.zoom
+                x:
+                    ((offset.x / this.canvas.width) * 2.0) /
+                    this.translation.zoom,
+                y:
+                    ((offset.y / this.canvas.height) * 2.0) /
+                    this.translation.zoom
             };
             this.translation.originX += glOffset.x;
             this.translation.originY -= glOffset.y;
@@ -67,9 +74,11 @@ module TriangleExample {
         //render the scene
         private render() {
             //convert the JS translation object to an emscripten array of floats
-            var translationPtr = HeapUtils.floatArrayToHeap(
-                [this.translation.originX, this.translation.originY, this.translation.zoom]
-            );
+            var translationPtr = HeapUtils.floatArrayToHeap([
+                this.translation.originX,
+                this.translation.originY,
+                this.translation.zoom
+            ]);
             //call the native draw function
             Bindings.drawTriangle(translationPtr);
             //free the array memory
