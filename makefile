@@ -7,7 +7,7 @@ all: glcore.js triangle.js
 triangle.js: triangle.ts
 	$(TSC) triangle.ts --out triangle.js
 
-glcore.js: visualizer.cpp shaders.cpp
+glcore.js: visualizer.cpp shaders.cpp shaders.h
 	$(CC) $? --bind \
 		  -s FULL_ES2=1 \
 		  -s EXPORTED_FUNCTIONS="['_initGL','_drawTriangle']" \
