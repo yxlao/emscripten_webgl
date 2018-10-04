@@ -1,7 +1,7 @@
 ///<reference path="input.ts"/>
 
 namespace TriangleExample {
-    //type declarations for emscripten module and wrappers
+    // type declarations for emscripten module and wrappers
     declare var Module: {
         cwrap: (name: string, returnType: string, params: string[]) => any;
         setValue: (ptr: number, value: number, type: string) => void;
@@ -9,7 +9,7 @@ namespace TriangleExample {
     declare var _malloc: (number) => number;
     declare var _free: (number) => void;
 
-    //bindings to C++ functions
+    // bindings to C++ functions
     class Bindings {
         public static initGL: (
             width: number,
@@ -20,7 +20,7 @@ namespace TriangleExample {
         ) => void = Module.cwrap("drawTriangle", "", ["number"]);
     }
 
-    //a helper for some JS-to-Emscripten conversions
+    // a helper for some JS-to-Emscripten conversions
     class HeapUtils {
         public static floatArrayToHeap(arr: number[]): number {
             var arrayPointer = _malloc(arr.length * 4);
@@ -30,27 +30,27 @@ namespace TriangleExample {
         }
     }
 
-    //our program that draws a triangle
+    // our program that draws a triangle
     export class Program implements IPanZoomable {
         //current translation of the triangle
         private translation = { originX: 0, originY: 0, zoom: 1.0 };
-        //mouse event handler
+        // mouse event handler
         private mouseController;
 
         constructor(private canvas: HTMLCanvasElement) {
-            //initialise the GL context, call the compiled native function
+            // initialise the GL context, call the compiled native function
             var initialised = Bindings.initGL(canvas.width, canvas.height);
             if (!initialised) {
                 console.log("Could not initialise GL");
                 return;
             }
-            //get the mouse listen to canvas mouse events
+            // get the mouse listen to canvas mouse events
             this.mouseController = new MouseController(canvas, this);
-            //request redraw
+            // request redraw
             this.invalidate();
         }
 
-        //translate the whole GL scene by offset
+        // translate the whole GL scene by offset
         pan(offset: Point) {
             var glOffset = {
                 x:
@@ -65,13 +65,13 @@ namespace TriangleExample {
             this.invalidate();
         }
 
-        //zoom by the given ratio
+        // zoom by the given ratio
         zoom(ratio: number, origin: Point) {
             this.translation.zoom *= ratio;
             this.invalidate();
         }
 
-        //render the scene
+        // render the scene
         private render() {
             //convert the JS translation object to an emscripten array of floats
             var translationPtr = HeapUtils.floatArrayToHeap([
