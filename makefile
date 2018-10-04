@@ -13,6 +13,7 @@ glcore.js: visualizer.cpp shaders.cpp shaders.h triangle.js
 		  -s EXPORTED_FUNCTIONS="['_initGL','_drawTriangle']" \
 		  -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap", "setValue"]' \
 		  $(LDFLAGS) -o glcore.js
+
 clean:
 	rm -rf triangle.js
 	rm -rf glcore.js
