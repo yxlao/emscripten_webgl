@@ -2,7 +2,7 @@ CC=emcc
 TSC=tsc
 LDFLAGS=-std=c++11 -O2 --llvm-opts 2
 
-all: glcore.js triangle.js main
+all: glcore.js triangle.js
 
 triangle.js: triangle.ts
 	$(TSC) triangle.ts --out triangle.js
