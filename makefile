@@ -10,6 +10,7 @@ triangle.js: triangle.ts
 glcore.js: visualizer.cpp shaders.cpp shaders.h triangle.js
 	$(CC) visualizer.cpp shaders.cpp --bind \
 		  -s FULL_ES2=1 \
+		  -s FULL_ES3=1 \
 		  -s EXPORTED_FUNCTIONS="['_initGL','_drawTriangle']" \
 		  -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap", "setValue"]' \
 		  $(LDFLAGS) -o glcore.js
