@@ -1,3 +1,6 @@
 glcore.js
 glcore.wasm
 triangle.js
+
+.ipynb_checkpoints/
+.vscode/
