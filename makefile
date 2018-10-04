@@ -16,4 +16,5 @@ glcore.js: visualizer.cpp shaders.cpp
 clean:
 	rm -rf triangle.js
 	rm -rf glcore.js
+	rm -rf glcore.wasm
 	rm -rf glcore.js.map
